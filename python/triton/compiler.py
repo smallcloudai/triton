@@ -1011,7 +1011,9 @@ static inline CUdeviceptr getPointer(PyObject *obj, int idx) {{
     if (!PyLong_Check(ret)) {{
       PyErr_SetString(PyExc_TypeError, "data_ptr method of Pointer object must return 64-bit int");
     }}
-    return (CUdeviceptr)PyLong_AsUnsignedLongLong(ret);
+    CUdeviceptr dev_ptr = (CUdeviceptr)PyLong_AsUnsignedLongLong(ret);
+    Py_DECREF(ret);
+    return dev_ptr;
   }}
   PyErr_SetString(PyExc_TypeError, "Pointer argument must be either uint64 or have data_ptr method");
   return (CUdeviceptr)0;
